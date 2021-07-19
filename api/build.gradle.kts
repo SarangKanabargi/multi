@@ -13,7 +13,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-    implementation("org.openapitools:openapi-generator-gradle-plugin:5.1.1")
+    implementation("org.openapitools:openapi-generator-gradle-plugin:5.1.1") {
+        exclude(group = "org.slf4j", module = "slf4j-simple")
+    }
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
 }
