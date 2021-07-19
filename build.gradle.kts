@@ -11,9 +11,11 @@ plugins {
 
 
 allprojects {
+    apply(plugin = "pl.allegro.tech.build.axion-release")
+
     group = "com.example"
     version = scmVersion.version
-    
+
     repositories {
         mavenCentral()
     }
@@ -32,7 +34,6 @@ allprojects {
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "java")
-
 
 
     java.sourceCompatibility = JavaVersion.VERSION_11

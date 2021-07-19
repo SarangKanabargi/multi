@@ -1,0 +1,127 @@
+openapi: 3.0.3
+info:
+  title: Customer API
+  version: 1.0.0
+  description: API that performs CRUD Operations on customers
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: Sarang Kanabargi
+    email: sarang.kanabargi@gmail.com
+servers:
+  - url: 'http://localhost:8080/api'
+paths:
+  /customer:
+    get:
+      summary: GET endpoint
+      tags:
+        - customers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+          headers: { }
+        '404':
+          description: Not Found
+      operationId: get-customers
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          in: header
+          name: customerId
+          description: Customer Id
+          required: true
+      description: Get customer data for a customer id
+      x-internal: false
+    post:
+      summary: POST endpoint
+      operationId: post-customers
+      responses:
+        '201':
+          description: Created
+        '302':
+          description: Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+      description: Post customer into DB
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+        description: Customer object
+      tags:
+        - customers
+    parameters: [ ]
+components:
+  schemas:
+    Customer:
+      title: Customer
+      type: object
+      description: Customer Record
+      properties:
+        customerId:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        phoneNo:
+          type: string
+          pattern: '^[0-9]+'
+          minLength: 10
+          maxLength: 10
+        address:
+          type: object
+          properties:
+            streetNo:
+              type: integer
+            streetName:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            zip:
+              type: integer
+              minimum: 5
+              maximum: 5
+        customerSince:
+          type: string
+        paymentInfo:
+          type: object
+          properties:
+            creditCardNo:
+              type: string
+              minLength: 16
+              maxLength: 16
+            expiryMonth:
+              type: integer
+              minimum: 2
+              maximum: 2
+            expiryYear:
+              type: integer
+              minimum: 2
+              maximum: 2
+            cvv:
+              type: integer
+              minimum: 3
+              maximum: 3
+        lastUpdatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+        - customerId
+        - name
+        - phoneNo
+        - address
+tags:
+  - name: customers

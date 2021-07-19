@@ -25,3 +25,37 @@ tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar
 tasks.getByName<Jar>("jar") {
     enabled = true
 }
+
+openApiValidate {
+    inputSpec.value("$rootDir/api/customer-api.yaml")
+}
+
+openApiGenerate {
+    inputSpec.set("$rootDir/api/customer-api.yaml")
+    generatorName.set("kotlin-spring")
+
+    groupId.set("com.example")
+    version.set("${project.version}")
+    packageName.set("com.example.customer")
+    outputDir.set("$buildDir/generated-source")
+    modelPackage.set("com.example.customer.model")
+    invokerPackage.set("com.example.customer")
+    modelNameSuffix.set("Dto")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java8-localdatetime",
+            "interfaceOnly" to "true",
+            "reactive" to "true",
+            "gradleBuildFile" to "true"
+        )
+    )
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir("$buildDir/generated-source/src/main/kotlin")
+        }
+    }
+}
